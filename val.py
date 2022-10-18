@@ -4,6 +4,9 @@ import os, os.path as osp
 import sys
 from pathlib import Path
 
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]="3"
+
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add kapao/ to path
 
@@ -22,6 +25,12 @@ import pickle
 
 PAD_COLOR = (114 / 255, 114 / 255, 114 / 255)
 
+def cheak_abs_name(name_list):
+    for part_name in name_list:
+        if (part_name >= '0' and part_name <= '9999999' and len(part_name) == 7):
+          return part_name
+
+    return 0
 
 def run_nms(data, model_out):
     if data['iou_thres'] == data['iou_thres_kp'] and data['conf_thres_kp'] >= data['conf_thres']:
@@ -57,7 +66,10 @@ def post_process_batch(data, imgs, paths, shapes, person_dets, kp_dets,
 
         if nd:
             path, shape = Path(paths[si]) if len(paths) else '', shapes[si][0]
-            img_id = int(osp.splitext(osp.split(path)[-1])[0]) if path else si
+            
+
+            #img_id = int(osp.splitext(osp.split(path)[-1])[0]) if path else si
+            img_id = int(cheak_abs_name(osp.splitext(osp.split(path)[-1])[0].split('_'))) if path else si
 
             # TWO-STAGE INFERENCE (EXPERIMENTAL)
             if two_stage:
@@ -153,7 +165,7 @@ def run(data,
         count_fused=False,
         two_stage=False,
         pad=0,
-        save_oks=False,
+        save_oks=True,
         json_name=''
         ):
 
@@ -250,6 +262,20 @@ def run(data,
         # Fuse keypoint and pose detections
         _, poses, scores, img_ids, n_fused_batch = post_process_batch(
             data, imgs, paths, shapes, person_dets, kp_dets, two_stage, pad, device, model)
+        
+        #for pose in poses:
+        #    for x, y, c in pose[data['kp_face']]:
+        #       cv2.circle(imgs, (int(x), int(y)), 1, [255, 0, 255], 2)
+        #   for seg in data['segments'].values():
+        #       pt1 = (int(pose[seg[0], 0]), int(pose[seg[0], 1]))
+        #       pt2 = (int(pose[seg[1], 0]), int(pose[seg[1], 1]))
+        #       cv2.line(imgs, pt1, pt2, [255, 0, 255], 2)
+        #   if data['use_kp_dets']:
+        #       for x, y, c in pose:
+        #           if c:
+        #               cv2.circle(imgs, (int(x), int(y)), 1, args.color_kp, 2)
+        
+        
 
         t2 += time_sync() - t
         seen += len(imgs)
@@ -329,8 +355,8 @@ def parse_opt():
     parser.add_argument('--conf-thres-kp-person', type=float, default=0.3)
     parser.add_argument('--iou-thres-kp', type=float, default=0.25)
     parser.add_argument('--overwrite-tol', type=int, default=50)
-    parser.add_argument('--scales', type=float, nargs='+', default=[1])
-    parser.add_argument('--flips', type=int, nargs='+', default=[-1])
+    parser.add_argument('--scales', type=float, nargs='+', default=[0.8, 1, 1.2])
+    parser.add_argument('--flips', type=int, nargs='+', default=[-1, 3, -1])
     parser.add_argument('--rect', action='store_true', help='rectangular input image')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--count-fused', action='store_true', help='count the number of fused keypoint objects')
