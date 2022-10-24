@@ -7,6 +7,7 @@ from pathlib import Path
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]="3"
 
+
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add kapao/ to path
 
@@ -144,7 +145,7 @@ def post_process_batch(data, imgs, paths, shapes, person_dets, kp_dets,
 @torch.no_grad()
 def run(data,
         weights=None,  # model.pt path(s)
-        batch_size=16,  # batch size
+        batch_size=12,  # batch size
         imgsz=1280,  # inference size (pixels)
         task='val',  # train, val, test, speed or study
         device='',  # cuda device, i.e. 0 or 0,1,2,3 or cpu
@@ -342,7 +343,7 @@ def run(data,
 
 def parse_opt():
     parser = argparse.ArgumentParser(prog='val.py')
-    parser.add_argument('--data', type=str, default='data/coco-kp.yaml', help='dataset.yaml path')
+    parser.add_argument('--data', type=str, default='data/coco-kp60000val.yaml', help='dataset.yaml path')
     parser.add_argument('--weights', default='kapao_s_coco.pt')
     parser.add_argument('--batch-size', type=int, default=1, help='batch size')
     parser.add_argument('--imgsz', type=int, default=1280, help='inference size (pixels)')

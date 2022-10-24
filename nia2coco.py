@@ -69,6 +69,11 @@ class custom_dataset:
             annotation['num_keypoints'] = self.count_keypoint(annotations['keypoints'])
             annotation['area'] = self.calc_area(annotations['bbox'])
             annotation['iscrowd'] = 0
+            for i in range(17):
+                vible = annotations['keypoints'][i*3+2]
+                if vible == 0:
+                    continue
+                annotations['keypoints'][i*3+2] = vible -1 
             annotation['keypoints'] = annotations['keypoints']
             #annotation['image_id'] = annotations['image_id']
             annotation['image_id'] = int(cheak_abs_name(imagesData['file_name'].split('_')))
@@ -100,7 +105,8 @@ class custom_dataset:
         pass
 
     def save_json(self, abspath):
-        filePath = abspath + "/" + "person_keypoints_.json"
+        filePath = abspath + "/" + "person_keypoints_val2017.json"
+        #filePath = "/home/ubuntu/koreaData/kapao_custom/data/datasets/test/annotations" + "/" + "person_keypoints_val2017.json"
         with open(filePath, 'w') as outfile:
             json.dump(self.cocoFormat, outfile)
 
@@ -155,7 +161,7 @@ def find_jsonSet(path):
 if __name__ == '__main__':
     print("### Change NIA Format to COCO Format")
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', dest='datasetDir', default='data/datasets/test/annotations/val/', help='path to directory')
+    parser.add_argument('-d', dest='datasetDir', default='data/datasets/test/annotations/train/', help='path to directory')
 
     args = parser.parse_args()
 
