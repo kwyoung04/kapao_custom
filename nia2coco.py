@@ -42,7 +42,7 @@ class custom_dataset:
         return 17 - cnt
 
     def calc_area(self,bbox):
-        return abs(bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
+        return abs((bbox[2] - bbox[0]) * (bbox[3] - bbox[1]))
 
     def set_coco_format(self, data):
 

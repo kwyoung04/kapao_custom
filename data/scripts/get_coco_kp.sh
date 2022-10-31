@@ -1,9 +1,7 @@
 #!/bin/bash
 # Example usage: bash data/scripts/get_coco_kp.sh
-
 # Make dataset directories
 mkdir -p data/datasets/coco/images
-
 # Download/unzip annotations
 d='data/datasets/coco' # unzip directory
 f1='annotations_trainval2017.zip'

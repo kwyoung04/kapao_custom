@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # model options
     parser.add_argument('--data', type=str, default='data/coco-kp.yaml')
     parser.add_argument('--imgsz', type=int, default=1280)
-    parser.add_argument('--weights', default='kapao_l_coco.pt')
+    parser.add_argument('--weights', default='runs/l_e500/train42/weights/best.pt')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or cpu')
     parser.add_argument('--conf-thres', type=float, default=0.7, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
