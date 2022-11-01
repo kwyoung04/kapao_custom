@@ -105,7 +105,7 @@ class custom_dataset:
         pass
 
     def save_json(self, abspath):
-        filePath = abspath + "/" + "person_keypoints_val2017.json"
+        filePath = abspath + "/../" + "person_keypoints_2017.json"
         #filePath = "/home/ubuntu/koreaData/kapao_custom/data/datasets/test/annotations" + "/" + "person_keypoints_val2017.json"
         with open(filePath, 'w') as outfile:
             json.dump(self.cocoFormat, outfile)
