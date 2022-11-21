@@ -17,7 +17,7 @@ import os.path as osp
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--img-path', default='res/crowdpose_100024.jpg', help='path to image')
+    parser.add_argument('-p', '--img-path', default='demos/VID_0159802_person(person).jpg', help='path to image')
 
     # plotting options
     parser.add_argument('--bbox', action='store_true')
@@ -33,7 +33,8 @@ if __name__ == '__main__':
     # model options
     parser.add_argument('--data', type=str, default='data/coco-kp.yaml')
     parser.add_argument('--imgsz', type=int, default=1280)
-    parser.add_argument('--weights', default='runs/l_e500/train42/weights/best.pt')
+    #parser.add_argument('--weights', default='kapao_l_coco.pt')
+    parser.add_argument('--weights', default='last.pt')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or cpu')
     parser.add_argument('--conf-thres', type=float, default=0.7, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
@@ -118,5 +119,5 @@ if __name__ == '__main__':
     if data['use_kp_dets']:
         filename += '_kp_obj'
     filename += '.png'
-    cv2.imwrite(filename, im0)
+    cv2.imwrite('demos/image/' + filename, im0)
 

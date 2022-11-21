@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="3"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 
 FILE = Path(__file__).absolute()
@@ -346,8 +346,8 @@ def run(data,
 
 def parse_opt():
     parser = argparse.ArgumentParser(prog='val.py')
-    parser.add_argument('--data', type=str, default='data/coco-kp.yaml', help='dataset.yaml path')
-    parser.add_argument('--weights', default='kapao_s_coco.pt')
+    parser.add_argument('--data', type=str, default='data/coco-kp_nia.yaml', help='dataset.yaml path')
+    parser.add_argument('--weights', default='runs/l_e500/train109/weights/last.pt')
     parser.add_argument('--batch-size', type=int, default=1, help='batch size')
     parser.add_argument('--imgsz', type=int, default=1280, help='inference size (pixels)')
     parser.add_argument('--task', default='val', help='train, val, test')
@@ -384,3 +384,7 @@ def main(opt):
 if __name__ == "__main__":
     opt = parse_opt()
     main(opt)
+
+
+
+
