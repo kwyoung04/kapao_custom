@@ -25,6 +25,7 @@
 storage.googleapis.com
 runs/*
 data/*
+nia_data/*
 !data/hyps/*
 !data/images/zidane.jpg
 !data/images/bus.jpg
