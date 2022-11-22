@@ -104,8 +104,8 @@ class custom_dataset:
     def compare_jpg_json(self):
         pass
 
-    def save_json(self, abspath):
-        filePath = abspath + "/../" + "person_keypoints_2017.json"
+    def save_json(self, abspath, dirType):
+        filePath = abspath + "/../" + "person_keypoints_" + dirType + "2017.json"
         #filePath = "/home/ubuntu/koreaData/kapao_custom/data/datasets/test/annotations" + "/" + "person_keypoints_val2017.json"
         with open(filePath, 'w') as outfile:
             json.dump(self.cocoFormat, outfile)
@@ -161,13 +161,15 @@ def find_jsonSet(path):
 if __name__ == '__main__':
     print("### Change NIA Format to COCO Format")
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', dest='datasetDir', default='data/datasets/test/annotations/train/', help='path to directory')
+    parser.add_argument('-d', dest='datasetDir', default='', help='path to directory')
+    parser.add_argument('--type', dest='dirType', default='train', help='train or val')
 
     args = parser.parse_args()
-
+    
     basename = os.path.basename(args.datasetDir)
     abspath = os.path.abspath(args.datasetDir)
     
+    dirSet = args.dirType
     
     info = dict()
     info["description"] = "NIA korea Dataset"
@@ -186,7 +188,7 @@ if __name__ == '__main__':
         coco_keypoint.push_json(file)
 
     #coco_keypoint.compare_jpg_json()
-    coco_keypoint.save_json(abspath)
+    coco_keypoint.save_json(abspath, dirSet)
 
 
     

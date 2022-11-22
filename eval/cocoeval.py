@@ -19,7 +19,7 @@ def nia_add_txt(id, dt, gt):
     ##    ex. Confusion Matrix 기반 TP, FP, TN, FN
     # 5) 최종 결과값
     
-    f = open("keypoint_4-5.txt", 'a')
+    f = open("log/keypoint_4-5.txt", 'a')
     data = "image id: " + str(id) + "\n"
     f.write(data)
     data = "prediction: " + str(dt) + "\n"

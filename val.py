@@ -4,8 +4,8 @@ import os, os.path as osp
 import sys
 from pathlib import Path
 
-os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+#os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+#os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 
 FILE = Path(__file__).absolute()
@@ -203,7 +203,7 @@ def run(data,
         assert not half, 'Two-stage processing must use full precision'
 
     startTime = get_now_timestamp()
-    f = open("keypoint_4-5.txt", 'a')
+    f = open("log/keypoint_4-5.txt", 'a')
     
     f_data = "start time: " + str(startTime) + "\n"
     f.write(f_data)
@@ -369,7 +369,7 @@ def run(data,
         
         
     endTime = get_now_timestamp()
-    f = open("keypoint_4-5.txt", 'a')
+    f = open("log/keypoint_4-5.txt", 'a')
     
     f_data = "end time: " + str(endTime) + "\n"
     f.write(f_data)
@@ -432,7 +432,7 @@ def main(opt):
 
 
 if __name__ == "__main__":
-    f = open("keypoint_4-5.txt", 'w')
+    f = open("log/keypoint_4-5.txt", 'w')
     
     opt = parse_opt()
     main(opt)
