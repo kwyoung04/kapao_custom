@@ -24,7 +24,30 @@ import tempfile
 import cv2
 import pickle
 
+import datetime as pydatetime
+
 PAD_COLOR = (114 / 255, 114 / 255, 114 / 255)
+
+def get_now():
+    return pydatetime.datetime.now()
+
+def get_now_timestamp():
+    return get_now().timestamp()
+
+
+
+# 1) time stamp 출력
+##    최소 시험수행 시작전, 후 2회 이상
+# 2) 실행 명령어
+##    시험 수행 명령어가 로그에 남아있어야 함
+# 3) 문제당 개별 결과값
+##    ex. 데이터ID, 모델예측값, GT
+# 4) 계산할 때 사용된 값
+##    ex. Confusion Matrix 기반 TP, FP, TN, FN
+# 5) 최종 결과값    
+
+
+
 
 def cheak_abs_name(name_list):
     for part_name in name_list:
@@ -179,6 +202,16 @@ def run(data,
         assert not rect, 'Cannot use rectangular inference with two-stage processing'
         assert not half, 'Two-stage processing must use full precision'
 
+    startTime = get_now_timestamp()
+    f = open("keypoint_4-5.txt", 'a')
+    
+    f_data = "start time: " + str(startTime) + "\n"
+    f.write(f_data)
+    f.write("run command: python val.py\n")
+    
+    f.close()
+
+
     use_kp_dets = not no_kp_dets
 
     # Initialize/load model and set device
@@ -212,10 +245,12 @@ def run(data,
     is_coco = 'crowdpose' not in data['path']
     if is_coco:
         from pycocotools.coco import COCO
-        from pycocotools.cocoeval import COCOeval
+        #from pycocotools.cocoeval import COCOeval
+        from eval.cocoeval import COCOeval
     else:
         from crowdposetools.coco import COCO
-        from crowdposetools.cocoeval import COCOeval
+        #from crowdposetools.cocoeval import COCOeval
+        from eval.cocoeval import COCOeval
 
     # Half
     half &= device.type != 'cpu'  # half precision only supported on CUDA
@@ -331,6 +366,20 @@ def run(data,
 
     if training:
         tmp.close()
+        
+        
+    endTime = get_now_timestamp()
+    f = open("keypoint_4-5.txt", 'a')
+    
+    f_data = "end time: " + str(endTime) + "\n"
+    f.write(f_data)
+    
+    f.write("OKS-based TP, FP, TN, FN\n")
+    
+    f_data = "Average Precision(AP) @[OSK = 0.50:0.95]: " + str(eval.stats[5]) + "\n"
+    f.write(f_data)
+        
+    f.close()
 
     # Print speeds
     t = tuple(x / seen * 1E3 for x in (t0, t1, t2))  # speeds per image
@@ -346,8 +395,9 @@ def run(data,
 
 def parse_opt():
     parser = argparse.ArgumentParser(prog='val.py')
-    parser.add_argument('--data', type=str, default='data/coco-kp_nia.yaml', help='dataset.yaml path')
+    parser.add_argument('--data', type=str, default='data/coco-kp.yaml', help='dataset.yaml path')
     parser.add_argument('--weights', default='runs/l_e500/train109/weights/last.pt')
+    #parser.add_argument('--weights', default='kapao_l_coco.pt')
     parser.add_argument('--batch-size', type=int, default=1, help='batch size')
     parser.add_argument('--imgsz', type=int, default=1280, help='inference size (pixels)')
     parser.add_argument('--task', default='val', help='train, val, test')
@@ -382,8 +432,14 @@ def main(opt):
 
 
 if __name__ == "__main__":
+    f = open("keypoint_4-5.txt", 'w')
+    
     opt = parse_opt()
     main(opt)
+    
+    
+    f.close()
+    
 
 
 
