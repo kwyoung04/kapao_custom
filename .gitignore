@@ -80,6 +80,7 @@ wheels/
 /wandb/
 .installed.cfg
 *.egg
+*.out
 
 
 # PyInstaller

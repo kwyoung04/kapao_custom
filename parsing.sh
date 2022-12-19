@@ -3,23 +3,22 @@ ln -s /home/ubuntu/data/nia/221118 /home/ubuntu/kapao_custom/data
 
 ## create dir
 cd /home/ubuntu/kapao_custom/data
-mkdir raw && mv image/ raw/ && mv json/ raw/
 
-mkdir -p annotations/train
+mkdir -p annotations/train2017
 mkdir -p annotations/val
 
 mkdir -p images/train
 mkdir -p images/val
 
 ## data
-find raw/image/ -name '*.jpg' -exec cp {} images/val/ \;
-find raw/image/ -name '*.jpg' -exec cp {} images/train/ \;
+find 06.품질검증 -name '*.jpg' -exec cp {} images/val/ \;
+find 06.품질검증 -name '*.jpg' -exec cp {} images/train/ \;
 
-find raw/json/ -name '*.json' -exec cp {} annotations/val/ \;
-find raw/json/ -name '*.json' -exec cp {} annotations/train/ \;
+find 06.품질검증 -name '*.json' -exec cp {} annotations/val/ \;
+find 06.품질검증 -name '*.json' -exec cp {} annotations/train/ \;
 
 ## json fusion
 cd /home/ubuntu/kapao_custom/
 
-python3 nia2coco.py -d data/221118/annotations/val/ --type val
-python3 nia2coco.py -d data/221118/annotations/train/ --type train
+python3 nia2coco.py -d data/datasets/221216/annotations/val --type val
+python3 nia2coco.py -d data/datasets/221216/annotations/train/ --type train

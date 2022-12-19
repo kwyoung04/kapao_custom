@@ -176,7 +176,7 @@ if __name__ == '__main__':
     info["url"] = "https://aihub.or.kr/"
     info["version"] = "1.0"
     info["year"] =  2022
-    info["contributor"] = "COCO Consortium"
+    info["contributor"] = "ZERONTECH"
     info["date_created"] = "2022/09/01"
 
 
