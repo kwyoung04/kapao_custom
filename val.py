@@ -4,8 +4,9 @@ import os, os.path as osp
 import sys
 from pathlib import Path
 
-#os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-#os.environ["CUDA_VISIBLE_DEVICES"]="0"
+
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]="2"
 
 
 FILE = Path(__file__).absolute()
@@ -141,8 +142,8 @@ def post_process_batch(data, imgs, paths, shapes, person_dets, kp_dets,
                     poses_mask = poses[mask]
 
                     if len(poses_mask):
-                        kpd[:, :4] = scale_coords(imgs[si].shape[1:], kpd[:, :4], shape)
-   
+                        tmp_kpd = scale_coords(imgs[si].shape[1:], kpd[:, :4], shape)
+                        kpd[:, :4] = tmp_kpd.clone()
 
 
                         kpd = kpd[:, :6].cpu()
@@ -330,7 +331,7 @@ def run(data,
             })
 
     if not training:  # save json
-        save_dir, weights_name = osp.split(weights)
+        save_dir, weights_name = osp.split(weights)    
         if not json_name:
             json_name = '{}_{}_c{}_i{}_ck{}_ik{}_ckp{}_t{}.json'.format(
                 task, osp.splitext(weights_name)[0],
